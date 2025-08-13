@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    h2 { text-align: center; }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: rgb(106, 143, 255);
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background-color: rgba(255, 97, 97, 0.8); }
+    .error { color: red; text-align: center; display: none; }
+    .success { color: green; text-align: center; display: none; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Change Credentials</h2>
+    <div class="error" id="changeErrorMsg">Current password is incorrect.</div>
+    <div class="success" id="successMsg">Credentials updated successfully!</div>
+    <form id="changeCredentialsForm">
+      <input type="password" id="currentPassword" placeholder="Current Password" required>
+      <input type="text" id="newUsername" placeholder="New Username" required>
+      <input type="password" id="newPassword" placeholder="New Password" required>
+      <button type="submit">Save Changes</button>
+    </form>
+    <br>
+    <button onclick="window.location.href='result.html'">⬅ Back to Dashboard</button>
+  </div>
+
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "admin.html";
+    }
+
+    document.getElementById("changeCredentialsForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const currentPassword = document.getElementById("currentPassword").value.trim();
+      const newUsername = document.getElementById("newUsername").value.trim();
+      const newPassword = document.getElementById("newPassword").value.trim();
+
+      if (currentPassword !== localStorage.getItem("adminPassword")) {
+        document.getElementById("changeErrorMsg").style.display = "block";
+        return;
+      }
+
+      localStorage.setItem("adminUsername", newUsername);
+      localStorage.setItem("adminPassword", newPassword);
+
+      document.getElementById("changeErrorMsg").style.display = "none";
+      document.getElementById("successMsg").style.display = "block";
+
+      setTimeout(() => {
+        document.getElementById("successMsg").style.display = "none";
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
